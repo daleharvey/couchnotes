@@ -1,0 +1,751 @@
+html, body { 
+    padding : 0px;
+    margin  : 0px;
+    height  : 100%;
+}
+
+body {
+    background : #E5E5E5;
+    font       : 1em sans-serif;
+    overflow-y : scroll;
+    padding-bottom : 30px;
+}
+
+h1 { 
+    margin      : 0px;
+}
+h3 { 
+    margin-top:0px; 
+}
+
+a img { 
+    border: 0px;
+}
+ 
+input[name="name"] { 
+    margin-bottom:10px;
+}
+
+#account form {
+    background : #EEE;
+    padding    : 10px;
+}
+input[type="text"], input[type="email"], input[type="password"] { 
+    padding   : 2px;
+    font-size : 90%;
+    border    : 1px solid #999;
+}
+
+fieldset { 
+    padding       : 0px;
+    margin-bottom : 10px;
+    border        : 0px;
+    overflow      : auto;
+}
+
+label {
+    display : block;
+}
+
+#items, #active {
+    width : 100%;
+}
+
+ul {
+    list-style : none;
+    margin     : 0;
+    padding    : 0;
+}
+
+#items { 
+    border-top : 1px solid #AAA; 
+}
+#items li {
+    border-bottom : 1px solid #AAA;
+}
+
+div.none { 
+    border-top : 1px solid #AAA; 
+    border-bottom : 1px solid #AAA; 
+}
+
+.users { margin-top:20px; } 
+
+#items .users { 
+    border-top : none; 
+}
+
+li .message {
+    padding : 2px;
+}
+
+li .state {
+    display:block;
+    height:60px;
+    float : right;
+}
+
+.user a { 
+    display         : block; 
+    padding         : 5px;
+    height          : 50px;  
+    outline         : none; 
+    line-height     : 50px; 
+    text-decoration : none; 
+    overflow        : hidden; 
+    color           : darkblue;
+    background      : -moz-linear-gradient(top, #C0CFE8 0%, #B1C9DD 100%);
+    background      : -webkit-gradient(linear, left top, left bottom, 
+                                       color-stop(0%,#C0CFE8), 
+                                       color-stop(100%,#B1C9DD));
+}
+
+.user, .item {
+    background : #EEE;
+    position   : relative;
+    min-height : 40px;
+    overflow   : auto;
+    cursor     : pointer;
+}
+.item { 
+    padding : 5px;
+}
+.details {
+    float:right;
+    padding : 4px;
+}
+
+#editheader { 
+    height:45px;
+}
+.btn.back { 
+    display:block;
+    margin:10px 0px;
+    float:left;
+    font-size:90%;
+    padding:4px;
+}
+
+#profile .item {
+    background    : #EEE;
+    padding       : 8px;
+    border-bottom : 1px solid #CCC;
+    overflow      : hidden;
+    min-height    : 0px;
+    height        : 30px;
+}
+
+.item { 
+    background : white;
+    color      : #222; 
+}
+
+.later {
+    background: -moz-linear-gradient(top, #C0CFE8 0%, #B1C9DD 100%);
+    background: -webkit-gradient(linear, left top, left bottom, 
+                                 color-stop(0%,#C0CFE8), 
+                                 color-stop(100%,#B1C9DD));
+}
+
+.now, .active {
+    background: -moz-linear-gradient(top, #BEE5CC 0%, #B1DBCE 100%);
+    background: -webkit-gradient(linear, left top, left bottom, 
+                                 color-stop(0%,#BEE5CC), 
+                                 color-stop(100%,#B1DBCE)); 
+}
+.done { 
+    background: -moz-linear-gradient(top, #FFF 0%, #EEE 100%);
+    background: -webkit-gradient(linear, left top, left bottom, 
+                                 color-stop(0%,#FFF), 
+                                 color-stop(100%,#EEE)); 
+}
+
+.selected { 
+    background: -moz-linear-gradient(top, #666 0%, #333 100%);
+    background: -webkit-gradient(linear, left top, left bottom, 
+                                 color-stop(0%,#FFF), 
+                                 color-stop(100%,#EEE)); 
+    color:#eee !important;
+}
+
+.blocked {
+    background-color : #fb8;
+    border-top       : 2px solid #f00;
+    border-bottom    : 2px solid #f00;
+}
+
+#profile label {
+    display : block;
+}
+
+.ava {
+    float        : left;
+    width        : 60px;
+    margin-right : 4px;
+    text-align   : center;
+    padding      : 4px 4px 0px 4px;
+    overflow     : hidden;
+}
+
+.ava img {
+    display    : block;
+    margin     : 0px auto;
+}
+
+.small {
+    font-size : 0.8em;
+}
+
+div.avatar {
+    padding        : 2px;
+    padding-bottom : 0;
+    margin-right   : 4px;
+    float          : left;
+    font-size      : 0.78em;
+    width          : 60px;
+    height         : 60px;
+    text-align     : center;
+}
+
+div.avatar .name {
+    padding-top : 2px;
+    position    : absolute;
+    top         : 0;
+    color       : #999;
+    right       : 0;
+}
+
+div.avatar img {
+    margin  : 0 auto;
+    padding : 0;
+    width   : 40px;
+    height  : 40px;
+}
+
+#messagewrapper {
+    position  : absolute;
+    right     : 87px;
+    left      : 9px;
+    top       : 8px;    
+    height    : 30px;
+}
+
+#message {
+    height:100%; 
+    width:100%;
+    margin    : 0px;
+    font-size : 90%;
+    padding   : 5px;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    -webkit-border-radius:0px;
+}
+
+select { 
+    padding : 2px; 
+}
+
+#notify { 
+    position   : fixed; 
+    bottom     : 40px; 
+    left       : 20px;
+    right      : 20px;
+    padding    : 20px 10px;
+    text-align : center; 
+    background : #000;
+    color      : white;
+    display    : none;
+    opacity    : 0.9;
+    z-index    : 200;
+    -webkit-box-shadow    :2px 2px 6px #000;
+    -webkit-border-radius :5px;
+    -moz-box-shadow       :2px 2px 6px #000;
+    -moz-border-radius    :5px;
+}
+
+#createbtn { 
+    width:80px;
+    position  : absolute;
+    right     : 8px;
+    top       : 8px;
+    z-index   : 100;
+    margin    : 0px;
+    height    : 30px;
+    font-size : 90%;
+    padding   : 4px;
+    z-index   : 300;
+    text-align:center
+}
+
+.clearfix:after {
+    content    : ".";
+    display    : block;
+    height     : 0;
+    clear      : both;
+    visibility : hidden;
+}
+
+.cancel { 
+    position : absolute;
+    bottom   : 10px;
+    right    : 10px;
+    display  : none;
+}
+
+input[type="submit"], input[type="button"], button {
+    padding         : 5px 5px; 
+    background      : 
+    -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+    background      :
+    -moz-linear-gradient(center top , #F9F9F9, #E3E3E3) 
+    repeat scroll 0 0 transparent;
+    border          : 1px solid #666;
+    border-radius   : 3px;
+    text-decoration : none;
+    cursor          : pointer;
+    -moz-border-radius    : 3px;
+    -webkit-border-radius : 3px;
+}
+
+.btn { 
+    padding               : 5px 5px; 
+    margin                : 0px 10px;
+    background            : 
+    -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+    background            :
+    -moz-linear-gradient(center top , #F9F9F9, #E3E3E3) 
+    repeat scroll 0 0 transparent;
+    border                : 1px solid #666;
+    border-radius         : 3px;
+    -moz-border-radius    : 3px;
+    -webkit-border-radius : 3px;
+    text-decoration       : none;
+    cursor                : pointer;
+    color:black;
+}
+
+.cover { 
+    position   : absolute;
+    top        : 0;
+    left       : 0;
+    width      : 100%;
+    height     : 100%;
+    background : black;
+    opacity    : 0.8;
+    z-index    : 100;
+}
+
+.dialog { 
+    margin-top  : 5px;
+    position    : absolute;
+    z-index     : 200;
+    width       : 220px;
+    left        : 50%;
+    margin-left : -110px;
+}
+
+.save {
+    display    : block;
+    margin-top : 20px;
+}
+
+.delete { 
+    color : red;
+}
+
+.confirm { 
+    color : green;
+}
+
+.warning { 
+    margin      : 5px;
+    background  : red;
+    color       : white;
+    padding     : 5px 0px;
+    font-weight : bold;
+    text-align  : center;
+}
+
+textarea[name="message"] { 
+    width              : 100%;
+    height             : 60px;
+    margin-bottom      : 10px;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+}
+
+label.checkbox { 
+    background            : #FEFEFE;
+    border                : 1px solid #CCC;
+    -moz-border-radius    : 3px;
+    -webkit-border-radius : 3px;
+    padding               : 3px;
+    margin                : 10px 0px;
+}
+
+.desc, .tags, .mentions { 
+    padding: 0px 10px;
+}
+.tags li, .mentions li { 
+    display:inline;
+}
+.tags a, .mentions a { 
+    text-decoration : none;
+    margin          : 0px 10px 10px 10px;
+    color           : darkblue;
+}
+.tags a:hover, .mentions a:hover { 
+    color : lightblue;
+}
+
+.name { 
+    font-size : 60%; 
+    color     : #333; 
+}
+
+#navigation { 
+    overflow      : auto;    
+    border-bottom : 1px solid #111;
+    background      : 
+    -webkit-gradient(linear, 0% 40%, 0% 70%, from(#4C5861), to(#384147));
+    background      :
+    -moz-linear-gradient(center top, #4C5861, #384147) 
+    repeat scroll 0 0 transparent;
+}
+#navigation li { 
+    float : left;
+    width : 20%;
+}
+#navigation li a {
+    text-align      : center;
+    text-decoration : none;
+    color           : #EEE;
+    padding         : 8px 0px;
+    line-height     : 100%;
+    display         : block;
+    outline         : none;
+    border-left     : 1px solid #666;
+    border-right    : 1px solid #000;
+    text-shadow     : 1px 1px 1px #000;
+    background      : 
+    -webkit-gradient(linear, 0% 40%, 0% 70%, from(#4C5861), to(#384147));
+    background      :
+    -moz-linear-gradient(center top, #4C5861, #384147) 
+    repeat scroll 0 0 transparent;
+} 
+#navigation li:first-child a { 
+    border-left:0px;
+}
+#navigation li:last-child a { 
+    border-right:0px;
+}
+#navigation li a.selected {
+    background   : -moz-linear-gradient(top, #C0CFE8 0%, #B1C9DD 100%); 
+
+    background   : -webkit-gradient(linear, left top, left bottom, 
+                                    color-stop(0%,#C0CFE8), 
+                                    color-stop(100%,#B1C9DD));
+    color        : white;
+    border-left  : 0px;
+    border-right : 0px;
+}
+
+#mainstate { 
+    display:none; 
+}
+
+#footer {
+    display:none !important;
+    background : white;
+    padding    : 10px;
+    color      : #999;
+    font-size  : 80%;
+    border-top : 1px solid #AAA;
+}
+
+.modalform {
+    position              : relative;
+    background            : white;
+    margin                : 20px auto;
+    padding               : 30px;
+    width                 : 220px;
+    -moz-box-shadow       : 0px 0px 5px #333;
+    -moz-border-radius    : 5px;
+    -webkit-box-shadow    : 0px 0px 5px #333;
+    -webkit-border-radius : 5px;
+}
+
+.modalform label span {
+    font-size : 80%;
+    display   : block;
+    color     : #999;
+}
+
+.modalform label {
+    display       : block;
+    margin-bottom : 20px;
+}
+.modalform label input { 
+    display : block;
+    width   : 100%;
+}
+
+#content { 
+    margin : 0px 0px 20px 0px; 
+}
+
+#create { 
+    display    : block;
+    background : #384147;
+    padding    : 5px 5px 2px 5px;
+    position   : relative;
+    min-height : 40px;
+    overflow   : auto;
+    outline    : none;
+    z-index    : 200;
+}
+#editform { 
+    padding:0px 10px;
+}
+
+h2 { 
+    font-weight   : normal; 
+    text-align    : center; 
+    margin-bottom : 20px; 
+    font-weight   : bold; 
+    color         : #2786C2; 
+    text-shadow   : 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+h3 #content { 
+    text-indent : 20px;
+}
+
+.edit { 
+    outline:none; 
+}
+
+.now { 
+    color:#222; 
+}
+.status {
+    margin-top:3px;
+    line-height:20px;
+    font-size:90%;
+    display:block;
+    width:60px;
+    height:20px;
+    color:#333;
+    font-weight:bold;
+    text-indent:20px;
+}
+.public { 
+    text-align:center;
+    width:20px;
+    height:35px;
+    overflow:hidden;
+    display    : block; 
+    width      : 60px; 
+    margin-top : 0px;
+}
+.public { 
+    opacity:0.2;
+}
+.published .public { 
+    opacity:0.6;
+}
+
+.isNotSelf .public { 
+    display:none; 
+}
+
+.now .status { 
+    background:url(../hammer.png) no-repeat;
+}
+.later .status { 
+    background:url(../ticket.png) no-repeat;
+}
+.done .status { 
+    background:url(../star.png) no-repeat;
+}
+
+.none { 
+    padding     : 10px 0px; 
+    text-align  : center; 
+    color       : #999; 
+    font-style  : italic; 
+    background  : white;
+    font-family : serif;
+}
+
+.profileheader {
+    margin-top   : 10px;
+    padding-left : 20px;
+}
+.profileheader h2 {
+    display      : inline;
+    padding-left : 10px;
+}
+.profileheader img { 
+    vertical-align:middle
+}
+
+.loading { 
+    min-height : 100px; 
+    background : url(../loading.gif) no-repeat center center;
+}
+
+.mainform label { 
+    line-height : 50px;
+    height:50px;
+    float       : left;
+    font-weight : bold;
+    width:100%;
+    position:relative;
+    display:block;
+}
+.first select { 
+    position:relative;
+    top:-15px;
+}
+.mainform label span {
+    display:block;
+    float:right;
+}
+#syncform { 
+    padding:0px 10px; 
+}
+.mainform fieldset { 
+    border-bottom : 1px solid #AAA;
+    border-top    : 1px solid #FFF;
+    margin        : 0px;
+}
+
+#editform div img {
+    vertical-align : middle;
+}
+
+.btns {
+    margin:20px 0px;
+    text-align:center;
+}
+.btns .btn {
+    margin:0px;
+    width:45%;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+}
+.btns .btn:first-child {
+    margin-right:5%;
+}
+
+.gravatar { 
+    width  : 39px; 
+    height : 39px; 
+}
+
+.mainform .last { 
+    border-bottom:0px; 
+}
+.mainform .first { 
+    border-top:0px; 
+}
+
+header, #footer { 
+    display:none; 
+}
+.err404 { 
+    margin:0px 20px;
+}
+.editing header { 
+    display:none !important;
+}
+.details { 
+    font-size   : 80%;
+    font-style  : italic;
+    color       : #999;
+    margin      : 5px 0px;
+    text-align  : right;
+    font-family : serif;
+}
+
+.fullbtn { 
+    width:100%;
+    display:block;
+} 
+
+.startsync { 
+    padding:10px;
+}
+
+.syncstatus { 
+    width:100%;
+    text-align:left;
+    display:block;
+    -webkit-box-sizing : border-box;
+    -moz-box-sizing    : border-box;
+    outline:none;
+}
+.syncstatus div { 
+    outline:none;
+    text-indent:30px;
+}
+.working div { 
+    background: url(../loadingsmall.gif) no-repeat 5px center !important;
+}
+.paused div { 
+    background: url(../control-pause.png) no-repeat 5px center;
+}
+.running div { 
+    background: url(../tick.png) no-repeat 5px center !important;
+}
+.paddedform { 
+    padding: 0px 10px;
+}
+
+#gravatar_preview { 
+    position:absolute;
+    top:15px; 
+    right:25px;
+}
+
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner {
+    border: none;
+}
+
+.main { 
+    padding:0px 10px;
+}
+
+#syncbtns button {
+    text-indent:20px;
+    width:33%;
+    float:left;
+    display:block;
+}
+#syncbtns button:last-child {
+    -moz-border-radius-topleft:0px;
+    -moz-border-radius-bottomleft:0px;
+    -webkit-border-radius-topleft:0px;
+    -webkit-border-radius-bottomleft:0px;
+}
+#syncbtns button:first-child {
+    -moz-border-radius-topright:0px;
+    -moz-border-radius-bottomright:0px;
+    -webkit-border-radius-topright:0px;
+    -webkit-border-radius-bottomright:0px;
+}
+
+#syncbtns { 
+    overflow:auto;
+}
+#syncbtns .middle {
+    border-width:1px 0 1px 0;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    width:34%;
+} 

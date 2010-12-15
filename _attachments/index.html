@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CouchNotes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
+    <link rel="stylesheet" href="style/main.css" type="text/css">
+  </head>
+
+  <body>
+
+    <div id="content"></div>
+
+    <script type="text/html" id="home_tpl">
+      <header>
+        <h1>CouchNotes</h1>
+        <a href="#!/new/edit/" class="right plus">+</a>
+      </header>      
+      <table class="notes" cellspacing="0">
+        {{#notes}}
+        <tr>
+          <td><a href="#!/{{id}}/">{{title}}</a></td>
+          <td class="date"><a href="#!/{{id}}/">{{date}}</a></td>
+          <td class="arrow"><a href="#!/{{id}}/">&gt;</a></td>
+        </tr>
+        {{/notes}}
+      </table>
+      {{^notes}}<div class="none">No Notes :(</div>{{/notes}}
+      
+    </script>
+    
+    <script type="text/html" id="create_tpl">
+      <header>
+
+        <a id="back" class="left">Back</a>      
+
+        <h1>{{title}}</h1>
+
+        <a class="right hide" id="save">Save</a>      
+        <a href="{{editLink}}" id="edit" class="right hide">Edit</a>      
+
+      </header>
+
+      <div id="notes"><textarea id="notestext">{{{notes}}}</textarea></div>
+
+      <footer>
+        <form action="#delete"> 
+          <input type="hidden" value="" />
+          <input type="submit" id="delete" value="" />
+        </form>
+      </footer>
+
+    </script>
+
+  </body>
+
+  <script src="../../../_utils/script/jquery.js"></script>
+  <script src="../../../_utils/script/jquery.couch.js"></script>
+  <script src="../../../_utils/script/sha1.js"></script>
+  
+  <script src="./md5.js"></script>
+  <script src="./mustache.js"></script>
+  <script src="./utils.js"></script>
+  <script src="./notes.js"></script>
+  
+</html>
