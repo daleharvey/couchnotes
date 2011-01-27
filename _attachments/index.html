@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>CouchNotes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="style/main.css" type="text/css">
   </head>
 
@@ -12,13 +12,15 @@
 
     <script type="text/html" id="home_tpl">
       <header>
+        <a id="sync" href="#!/sync/" class="left">Sync</a>      
         <h1>CouchNotes</h1>
         <a href="#!/new/edit/" class="right plus">+</a>
       </header>      
+      
       <table class="notes" cellspacing="0">
         {{#notes}}
         <tr>
-          <td><a href="#!/{{id}}/">{{title}}</a></td>
+          <td class="title"><a href="#!/{{id}}/">{{title}}</a></td>
           <td class="date"><a href="#!/{{id}}/">{{date}}</a></td>
           <td class="arrow"><a href="#!/{{id}}/">&gt;</a></td>
         </tr>
@@ -27,8 +29,55 @@
       {{^notes}}<div class="none">No Notes :(</div>{{/notes}}
       
     </script>
+
+    <script type="text/html" id="sync_tpl">
+      <header>
+        <a class="left" href="#!">Back</a>      
+        <h1>Sync</h1>
+      </header>
+
+      <div id="notes">
+
+        <div id="feedback">No Current Tasks</div>
+
+        <form action="#sync" id="syncform" class="mainform">
+          <fieldset>
+            <label>User Name
+              <span><input type="text" name="username" value="{{username}}"
+                           id="username" placeholder="johndoe" /></span>
+            </label>
+          </fieldset>
+          <fieldset>
+            <label>Password
+              <span><input type="password" value="{{password}}"
+                           id="password" name="password" /></span>
+            </label>
+          </fieldset>
+          <fieldset>
+            <label>Server
+              <span><input type="text" name="server" value="{{server}}"
+                           id="server" placeholder="http://example.com" /></span>
+            </label>
+          </fieldset>
+          <fieldset>
+            <label>Database
+              <span><input type="text" name="database" value="{{database}}"
+                           id="database" placeholder="mywork" /></span>
+            </label>
+          </fieldset>
+          
+          <input type="hidden" name="action" id="syncaction" />
+          
+          <div id="syncbtns">
+            <button class="syncbtn" id="push"><div>Push</div></button>
+            <button class="syncbtn" id="pull"><div>Pull</div></button>
+          </div>
+        </form>
+      </div>
+    </script>
     
     <script type="text/html" id="create_tpl">
+
       <header>
 
         <a id="back" class="left">Back</a>      
@@ -40,7 +89,9 @@
 
       </header>
 
-      <div id="notes"><textarea id="notestext">{{{notes}}}</textarea></div>
+      <div id="notes">
+        <textarea id="notestext">{{{notes}}}</textarea>
+      </div>
 
       <footer>
         <form action="#delete"> 

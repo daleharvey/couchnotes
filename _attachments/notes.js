@@ -1,12 +1,16 @@
 var Notes = (function () {  
 
-  var dbName     = 'couchnotes',
+  var mainDb     = document.location.pathname.split("/")[1],
+      ctrlDb     = mainDb + "-ctrl",
+      storageKey = "syncDetails",
+      details    = jsonStorage(storageKey),
       router     = new Router(),
-      db         = $.couch.db(dbName),
+      $db        = $.couch.db(mainDb),
+      $ctrl      = $.couch.db(ctrlDb),
       currentDoc = null;
-
+  
   router.get(/^(!)?$/, function () {
-    db.view(dbName + '/notes', {
+    $db.view('couchnotes/notes', {
       descending : true,
       success : function (data) {
         var i, rows = [];
@@ -21,7 +25,11 @@ var Notes = (function () {
       }
     });
   });
-  
+
+  router.get('!/sync/', function () {
+    render("#sync_tpl", details);
+  });
+    
   router.get('!/:id/edit/', function (id) {
     showNote(id, true);
   });
@@ -38,9 +46,52 @@ var Notes = (function () {
     });
   });
 
+  function _changesListener(dbName, since) {
+    $.ajax({
+      method   : "GET",
+      url      : "/" + dbName + "/_changes",
+      data     : {since: since, feed:"longpoll", include_docs: true},
+      contentType : "application/json", 
+      dataType : "json",
+      "success": function (data) {
+        for( var i = 0; i < data.results.length; i++) {
+          var doc = data.results[i].doc;
+          if (doc.result && doc.status && doc.status === "complete") { 
+            $("#feedback").text("Replication Complete");            
+          }
+        }
+        _changesListener(dbName, data.last_seq);
+      }
+    });
+  };
+  
+  function changesListener(dbName) {
+    $ctrl.info({
+      "success": function (data) {
+        _changesListener(dbName, data.update_seq);
+      },
+      error : function () {
+        $ctrl = false;
+      }
+    });
+  };
 
+  changesListener(ctrlDb);
+  
+  function saveDetails() {
+    
+    details = {
+      "username" : $("#username").val(),
+      "password" : $("#password").val(),
+      "server"   : $("#server").val(),
+      "database" : $("#database").val()
+    };
+    jsonStorage(storageKey, details);    
+  };
+
+  
   function showNote(id, edit) {
-    db.openDoc(id, {
+    $db.openDoc(id, {
       error : function (data) {
         currentDoc = null;
         renderNote({title:"New Note"}, edit);
@@ -79,7 +130,7 @@ var Notes = (function () {
         title = notes.split('\n')[0];
 
     if (notes === "" || title === "") {
-      return false;
+      return callback();
     }
     
     var doc = {
@@ -87,16 +138,15 @@ var Notes = (function () {
       title : title,
       type : 'note',
       notes : notes,
-      created : new Date()
+      created : new Date().getTime()
     };
 
     if (currentDoc) {
       doc._id = currentDoc._id;
       doc._rev = currentDoc._rev;
     }
-
       
-    db.saveDoc(doc, {
+    $db.saveDoc(doc, {
       success : function (data) {
         if (!currentDoc) {
           currentDoc = doc;
@@ -120,9 +170,20 @@ var Notes = (function () {
     $('#content').html(Mustache.to_html($(tpl).html(), data));
   };
 
+  function jsonStorage(key, val) {
+    if (val) {
+      localStorage[key] = JSON.stringify(val);
+      return true;
+    } else { 
+      return localStorage && localStorage[key] &&
+        JSON.parse(localStorage[key]) || false;
+    }
+  };
+
   // I dont like these global events, they are bound to the page permanently
   // so may cause conflicts
   function bindDomEvents() {    
+
     $("#notes textarea").live("focus", startEditing);
 
     $("#back").live("click", function () {
@@ -130,12 +191,53 @@ var Notes = (function () {
         document.location.href = '#!';
       });
     });
+    
     $("#save").live("click", function () {
       saveNote(function (doc) {
-        document.location.href = '#!/' + doc._id +'/';
+          if (doc) { 
+              document.location.href = '#!/' + doc._id +'/';
+          }
       });
     });     
   };
+
+  function createUrlFromDetails() {
+    if (details.username === "") {
+      return "http://" + details.server + "/" + details.database;
+    } else { 
+      return "http://" + details.username + ":" + details.password + "@"
+        + details.server + "/" + details.database;
+    }
+  };
+
+  function doReplication(obj) {
+    $.ajax({
+      "url": "/" + ctrlDb,
+      "type": 'POST',
+      "data": JSON.stringify(obj),
+      contentType : "application/json",
+      dataType : "json",
+      "success": function () {
+        $("#feedback").text("Starting Replication");
+      }
+    });
+  };
+  
+  $("#push").live("click", function (obj) {
+    saveDetails();
+    doReplication({    
+      "target" : createUrlFromDetails(),
+      "source" : mainDb
+    });
+  });
+
+  $("#pull").live("click", function () {
+    saveDetails();
+    doReplication({    
+      "target" : mainDb,
+      "source" : createUrlFromDetails()
+    });
+  });
   
   bindDomEvents();
   router.init();
