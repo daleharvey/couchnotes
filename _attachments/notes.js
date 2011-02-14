@@ -1,14 +1,12 @@
-var Notes = (function () {  
+var Notes = (function () {
 
   var mainDb     = document.location.pathname.split("/")[1],
-      ctrlDb     = mainDb + "-ctrl",
       storageKey = "syncDetails",
       details    = jsonStorage(storageKey),
       router     = new Router(),
       $db        = $.couch.db(mainDb),
-      $ctrl      = $.couch.db(ctrlDb),
       currentDoc = null;
-  
+
   router.get(/^(!)?$/, function () {
     $db.view('couchnotes/notes', {
       descending : true,
@@ -29,7 +27,7 @@ var Notes = (function () {
   router.get('!/sync/', function () {
     render("#sync_tpl", details);
   });
-    
+
   router.get('!/:id/edit/', function (id) {
     showNote(id, true);
   });
@@ -39,57 +37,23 @@ var Notes = (function () {
   });
 
   router.post('delete', function () {
-    db.removeDoc(currentDoc, {
+    $db.removeDoc(currentDoc, {
       success: function () {
         document.location.href = "#!";
       }
     });
   });
 
-  function _changesListener(dbName, since) {
-    $.ajax({
-      method   : "GET",
-      url      : "/" + dbName + "/_changes",
-      data     : {since: since, feed:"longpoll", include_docs: true},
-      contentType : "application/json", 
-      dataType : "json",
-      "success": function (data) {
-        for( var i = 0; i < data.results.length; i++) {
-          var doc = data.results[i].doc;
-          if (doc.result && doc.status && doc.status === "complete") { 
-            $("#feedback").text("Replication Complete");            
-          }
-        }
-        _changesListener(dbName, data.last_seq);
-      }
-    });
-  };
-  
-  function changesListener(dbName) {
-    $ctrl.info({
-      "success": function (data) {
-        _changesListener(dbName, data.update_seq);
-      },
-      error : function () {
-        $ctrl = false;
-      }
-    });
-  };
-
-  changesListener(ctrlDb);
-  
   function saveDetails() {
-    
     details = {
       "username" : $("#username").val(),
       "password" : $("#password").val(),
       "server"   : $("#server").val(),
       "database" : $("#database").val()
     };
-    jsonStorage(storageKey, details);    
+    jsonStorage(storageKey, details);
   };
 
-  
   function showNote(id, edit) {
     $db.openDoc(id, {
       error : function (data) {
@@ -104,10 +68,10 @@ var Notes = (function () {
       }
     });
   };
-  
+
   function renderNote(data, edit) {
     render("#create_tpl", data);
-    if (edit) { 
+    if (edit) {
       $("#notes textarea")[0].focus();
     } else {
       stopEditing();
@@ -123,16 +87,15 @@ var Notes = (function () {
     $("#edit").show();
     $("#save").hide();
   };
-    
-  function saveNote(callback) {
 
-    var notes = $("#notes textarea").val(),
-        title = notes.split('\n')[0];
+  function saveNote(notes, callback) {
+
+    var title = notes.split('\n')[0];
 
     if (notes === "" || title === "") {
       return callback();
     }
-    
+
     var doc = {
       _id : new Date().getTime() + "",
       title : title,
@@ -145,7 +108,7 @@ var Notes = (function () {
       doc._id = currentDoc._id;
       doc._rev = currentDoc._rev;
     }
-      
+
     $db.saveDoc(doc, {
       success : function (data) {
         if (!currentDoc) {
@@ -160,11 +123,11 @@ var Notes = (function () {
 
     return title;
   };
-  
+
   function formatDate(date) {
     return prettyDate(new Date(date));
   };
-  
+
   function render(tpl, data) {
     data = data || {};
     $('#content').html(Mustache.to_html($(tpl).html(), data));
@@ -174,7 +137,7 @@ var Notes = (function () {
     if (val) {
       localStorage[key] = JSON.stringify(val);
       return true;
-    } else { 
+    } else {
       return localStorage && localStorage[key] &&
         JSON.parse(localStorage[key]) || false;
     }
@@ -182,50 +145,57 @@ var Notes = (function () {
 
   // I dont like these global events, they are bound to the page permanently
   // so may cause conflicts
-  function bindDomEvents() {    
+  function bindDomEvents() {
 
     $("#notes textarea").live("focus", startEditing);
 
-    $("#back").live("click", function () {
-      saveNote(function (doc) {
-        document.location.href = '#!';
+    $("#back").live("mousedown", function () {
+      // ugh, mobile webkit will persist the text area unless I destroy it
+      // before ajax request
+      var notes = $("#notes textarea").val();
+      $("#notes textarea").remove();
+      setTimeout(function () {
+        saveNote(notes, function (doc) {
+          document.location.href = '#!';
+        }, 0);
       });
     });
-    
+
     $("#save").live("click", function () {
-      saveNote(function (doc) {
-          if (doc) { 
-              document.location.href = '#!/' + doc._id +'/';
-          }
+      saveNote($("#notes textarea").val(), function (doc) {
+        if (doc) {
+          document.location.href = '#!/' + doc._id +'/';
+        }
       });
-    });     
+    });
   };
 
   function createUrlFromDetails() {
     if (details.username === "") {
       return "http://" + details.server + "/" + details.database;
-    } else { 
+    } else {
       return "http://" + details.username + ":" + details.password + "@"
         + details.server + "/" + details.database;
     }
   };
 
   function doReplication(obj) {
+    $("#feedback").text("Starting Replication");
     $.ajax({
-      "url": "/" + ctrlDb,
+      "url": "/_replicate",
       "type": 'POST',
       "data": JSON.stringify(obj),
       contentType : "application/json",
       dataType : "json",
       "success": function () {
-        $("#feedback").text("Starting Replication");
-      }
+        $("#feedback").text("Replication Complete");
+     }
     });
   };
-  
+
   $("#push").live("click", function (obj) {
     saveDetails();
-    doReplication({    
+    doReplication({
       "target" : createUrlFromDetails(),
       "source" : mainDb
     });
@@ -233,13 +203,13 @@ var Notes = (function () {
 
   $("#pull").live("click", function () {
     saveDetails();
-    doReplication({    
+    doReplication({
       "target" : mainDb,
       "source" : createUrlFromDetails()
     });
   });
-  
+
   bindDomEvents();
   router.init();
-  
+
 })();

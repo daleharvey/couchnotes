@@ -63,8 +63,6 @@ var Router = (function() {
   
   function formSubmitted(e) {
 
-    console.log(e);
-      
     e.preventDefault();
     var action = e.target.getAttribute("action");
     
